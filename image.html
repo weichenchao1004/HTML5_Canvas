@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        img{
+            display: none;
+        }
+    </style>
+    <script>
+        window.addEventListener('load',function() {
+            var canvas = document.querySelector('canvas');
+            var context = canvas.getContext('2d');
+            var img = document.querySelector('img');
+
+            var ar = img.width/img.height;
+            console.log(ar);
+
+            context.drawImage(img,10,10,canvas.width,canvas.width/ar);
+        })
+    </script>
+</head>
+<body>
+<canvas height="400" width="400">
+
+</canvas>
+<img src="back.jpg" alt="back"/>
+</body>
+</html>

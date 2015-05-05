@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body,html{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background: #eee;
+            height: 100vh;
+            width: 100vw;
+        }
+        canvas{
+
+            border: 1px solid red;
+
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded',function() {
+            var canvas = document.querySelector('canvas');
+            var canvas2d = canvas.getContext('2d');
+
+            canvas2d.beginPath();
+            canvas2d.strokeStyle ='blue';
+            var began = false;
+
+            canvas.addEventListener('click',function(e) {
+                //drawRandomSquare(canvas2d, e.clientX, e.clientY);
+
+                if(began){
+                    canvas2d.lineTo(e.clientX, e.clientY);
+                    canvas2d.stroke();
+                }
+                else{
+                    began = true;
+                    canvas2d.moveTo(e.clientX, e.clientY);
+
+                }
+
+            })
+
+            //strokeRect acts like adding a border in this rectangle
+        })
+
+        function drawRandomSquare(canvas2d,x,y) {
+            canvas2d.fillStyle = 'red';
+            canvas2d.fillRect(x-10,y-10,20,20);//positionx,positiony,width,height
+        }
+    </script>
+</head>
+<body>
+   <canvas width="600" height="500">
+   </canvas>
+</body>
+</html>

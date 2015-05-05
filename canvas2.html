@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body,html{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background: #eee;
+            height: 100vh;
+            width: 100vw;
+        }
+        canvas{
+
+            border: 1px solid red;
+
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded',function() {
+            var canvas = document.querySelector('canvas');
+            var canvas2d = canvas.getContext('2d');
+
+            canvas2d.beginPath();
+            canvas2d.strokeStyle ='blue';
+            var positions = [];
+
+            canvas.addEventListener('mousedown',function(e) {
+               canvas2d.moveTo(e.clientX, e.clientY);
+
+                positions.push([e.clientX, e.clientY]);
+                console.log(positions);
+               canvas.addEventListener('mousemove', handler(e));
+
+            });
+
+            canvas.addEventListener('mouseup',function(e) {
+                canvas.removeEventListener('mousemove',handler(e));
+            })
+
+            function handler(e) {
+                canvas2d.setLineDash([5,15]);
+                canvas2d.lineTo(e.clientX, e.clientY);
+
+                canvas2d.stroke();
+            }
+
+
+           })
+
+
+
+
+
+    </script>
+</head>
+<body>
+<canvas width="600" height="500">
+</canvas>
+</body>
+</html>

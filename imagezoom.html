@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body{
+            margin:0;
+            padding:0;
+        }
+        img{
+            display: none;
+        }
+    </style>
+    <script>
+        window.addEventListener('load',function() {
+            var canvas = document.querySelector('canvas');
+            var context = canvas.getContext('2d');
+            var img = document.querySelector('img');
+
+            //create a dummy canvas to hold the image info
+            var temp_canvas = document.createElement('canvas');
+            var tc = temp_canvas.getContext('2d');
+
+
+            var scale = 0.5;
+            var s = 100;
+            var d = 50;
+
+             temp_canvas.height = d;
+             temp_canvas.width = d;
+            context.drawImage(img,0,0, img.width * scale,img.height * scale);
+
+
+            document.addEventListener('mousemove',function(e) {
+
+                context.drawImage(img,0,0, img.width * scale,img.height * scale);
+                var x = e.clientX;
+                var y = e.clientY;
+                var sx = x / scale;
+                var sy = y / scale;
+
+                //draw the sliced image onto the temp canvas
+                //tc.drawImage(img, sx - s/2, sy-s/2, s,s, x-d/2, y - d/2,d,d);
+                tc.drawImage(img, sx - s/2, sy-s/2, s,s, 0,0,d,d);
+                //get the image data
+                //get the .data property and run a for loop to turn to average;
+                //use putImageData to write to the main canvas
+
+                var imgdata = tc.getImageData(0,0,d,d);
+                console.log(imgdata.data.length);
+                var pixels = imgdata.data;
+                for(var i = 0; i < imgdata.data.length; i+=4){
+                    var r = i * 4 , g = r + 1, b = g + 1;
+
+                    var avg = (pixels[r] + pixels[g] + pixels[b])/3;
+                    console.log(avg);
+                    pixels[r] = pixels[b] = pixels[g] = avg;
+
+                }
+                context.putImageData(imgdata,x - d/2, y - d/2,0,0,d,d);
+
+            });
+
+            //working withe a grayscale pic
+        })
+    </script>
+</head>
+<body>
+<canvas height="225" width="225">
+
+</canvas>
+<img src="back.jpg" alt="back"/>
+</body>
+</html>

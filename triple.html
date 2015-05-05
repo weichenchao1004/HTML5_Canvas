@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+        }
+        span {
+            background-color: red;
+            height: 100vh;
+            width: 100vw;
+        }
+        canvas {
+            border: 1px solid red;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            var canvas = document.querySelector('canvas');
+            var context = canvas.getContext('2d');
+
+            context.beginPath();
+            var triple = new Triple(context);
+            context.strokeStyle = 'blue';
+
+            canvas.addEventListener('click', function (e) {
+                if (triple.complete()) {
+                    triple = new Triple(context);
+                } else {
+                }
+                triple.addPoint(e.clientX, e.clientY);
+            });
+        });
+
+        function Triple(context) {
+            this.context = context;
+            this.points = [];
+        }
+
+        Triple.prototype.complete = function () {
+            return this.points.length === 4;
+        };
+
+        Triple.prototype.bezierArray = function () {
+            return this.points.slice(1).reduce(function (arr, point) {
+                return arr.concat(point[0], point[1]);
+            }, []);
+        };
+
+        Triple.prototype.addPoint = function(x, y) {
+            var context = this.context;
+            switch (this.points.length) {
+                case 0: context.moveTo(x, y);
+                    this.points.push([x, y]);
+                    break;
+                case 2:
+                case 1: context.lineTo(x, y);
+                    this.points.push([x, y]);
+                    break;
+                case 3: context.lineTo(x, y);
+                    this.points.push([x, y]);
+                    context.strokeStyle = 'darkred';
+                    context.stroke();
+                    context.beginPath();
+                    context.strokeStyle = 'red';
+                    context.moveTo.apply(context, this.points[0]);
+                    context.bezierCurveTo.apply(context, this.bezierArray());
+                    context.stroke();
+                    break;
+                default:
+                    throw new Error('Invalid number of points for the triple');
+                    break;
+            }
+        };
+
+        Triple.prototype.toString = function () {
+            return this.points.toString();
+        };
+    </script>
+</head>
+<body>
+<canvas width="600" height="500"></canvas>
+</body>
+</html>

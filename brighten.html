@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas height="450" width="450"></canvas>
+
+<img src="back.jpg" alt="back"/>
+<script>
+
+    window.addEventListener('load',function() {
+        var canvas = document.querySelector('canvas');
+        var img = document.querySelector('img');
+        var context = canvas.getContext('2d');
+        context.drawImage(img,0,0);
+
+        var imagedata = context.getImageData(0,0,canvas.width, canvas.height);
+        console.log(imagedata.data.length);
+        brightenCircle(imagedata);
+        context.putImageData(imagedata,0,0);
+
+
+    });
+
+
+    function brightenCircle(img_data) {
+        var red, blue, green;
+        for (var i = 0; i < img_data.data.length; i+=4){
+            red = img_data.data[i] += brighten(i/4);
+            blue = img_data.data[i+1] += brighten(i/4);
+            green = img_data.data[i+2] += brighten(i/4);
+
+        }
+    }
+
+    function brighten(i){
+        var canvas = document.querySelector('canvas');
+        var row = i % canvas.width;
+        var column  = i / canvas.width;
+
+        var x = canvas.width/2;
+        var y = canvas.height/2;
+
+
+        var r = Math.sqrt((x-row) * (x-row) + (y-column) * (y-column));
+
+        return r * 1.25;
+
+
+    }
+</script>
+</body>
+</html>
